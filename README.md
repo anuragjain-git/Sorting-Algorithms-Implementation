@@ -1,6 +1,6 @@
 # Sorting Algorithms Implementation
 
-This repository contains various sorting algorithms implemented in Java. Each sorting algorithm is organized in its own directory with accompanying Java source files.
+This repository contains various sorting algorithms implemented in Java with its Time Complexity. Each sorting algorithm is organized in its own directory with accompanying Java source files.
 
 ## Sorting Algorithms Included
 
