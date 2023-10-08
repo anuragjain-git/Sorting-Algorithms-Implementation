@@ -1,23 +1,63 @@
-package RadixSort;
+package ForGitHub.RadixSort;
 
 import java.util.Arrays;
 import java.util.OptionalInt;
 
 public class RadixSort {
     public static void radixSort(int[] arr) {
-        OptionalInt maxOptional = Arrays.stream(arr).max();
+        int[] positive = Arrays.stream(arr)
+                .filter(x -> x >= 0)
+                .toArray();
 
-        if (maxOptional.isPresent()) {
-            int max = maxOptional.getAsInt();
-            int exp = 1;
+        int[] negative = Arrays.stream(arr)
+                .filter(x -> x < 0)
+                .toArray();
 
-            while (max / exp > 0) {
-                countingSortByDigit(arr, exp);
-                exp *= 10;
+        if (positive.length > 0) {
+            OptionalInt maxOptional = Arrays.stream(positive).max();
+
+            if (maxOptional.isPresent()) {
+                int max = maxOptional.getAsInt();
+                int exp = 1;
+
+                while (max / exp > 0) {
+                    countingSortByDigit(positive, exp);
+                    exp *= 10;
+                }
             }
-        } else {
-            // Handle the case where the array is empty
-            System.out.println("The array is empty.");
+        }
+
+        if (negative.length > 0) {
+            // Convert negative numbers to positive for sorting
+            for (int i = 0; i < negative.length; i++) {
+                negative[i] = -negative[i];
+            }
+
+            OptionalInt maxOptional = Arrays.stream(negative).max();
+
+            if (maxOptional.isPresent()) {
+                int max = maxOptional.getAsInt();
+                int exp = 1;
+
+                while (max / exp > 0) {
+                    countingSortByDigit(negative, exp);
+                    exp *= 10;
+                }
+            }
+
+            // Convert back to negative after sorting
+            for (int i = 0; i < negative.length; i++) {
+                negative[i] = -negative[i];
+            }
+        }
+
+        // Combine the sorted positive and negative arrays
+        int idx = 0;
+        for (int i = 0; i < negative.length; i++) {
+            arr[idx++] = negative[i];
+        }
+        for (int i = 0; i < positive.length; i++) {
+            arr[idx++] = positive[i];
         }
     }
     private static void countingSortByDigit(int[] arr, int exp) { //named for "exponent"
@@ -48,7 +88,7 @@ public class RadixSort {
     }
 
     public static void main(String[] args) {
-        int[] arr = {170, 45, 75, 90, 802, 24, 2, 66};
+        int[] arr = {170, -45, 75, -90, 802, -24, 2, 66};
         radixSort(arr);
         System.out.println("Sorted Array: " + Arrays.toString(arr));
     }
