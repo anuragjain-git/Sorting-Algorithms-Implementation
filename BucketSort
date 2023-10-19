@@ -1,0 +1,53 @@
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class BucketSort {
+    public static void bucketSort(int[] arr) {
+        int maxVal = Integer.MIN_VALUE;
+        int minVal = Integer.MAX_VALUE;
+
+        // Find the maximum and minimum values in the array
+        for (int num : arr) {
+            maxVal = Math.max(maxVal, num);
+            minVal = Math.min(minVal, num);
+        }
+
+        // Calculate the range for each bucket
+        int range = (maxVal - minVal + 1) / arr.length;
+
+        // Create buckets...@SuppressWarnings("unchecked")
+        List<Integer>[] buckets = new ArrayList[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            buckets[i] = new ArrayList<>();
+        }
+
+        // Place elements into buckets
+        for (int num : arr) {
+            int index = (num - minVal) / range;
+            buckets[index].add(num);
+        }
+
+        // Sort each bucket and place elements back into the original array
+        int index = 0;
+        for (List<Integer> bucket : buckets) {
+            Collections.sort(bucket);
+            for (int num : bucket) {
+                arr[index++] = num;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {64, 25, 12, 22, 11};
+        bucketSort(arr);
+        System.out.println("Sorted array: " + Arrays.toString(arr));
+    }
+}
+
+
+//Time Complexity: O(n^2) (in the worst case)
+
